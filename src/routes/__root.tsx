@@ -78,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CourtDir — Ontario Courthouse Directory" },
+      { title: "CourtLinks — Ontario Courthouse Directory" },
       {
         name: "description",
         content:
           "An independent directory of Ontario courthouses with courtroom Zoom links, sign-up sheets, and dial-in details.",
       },
-      { property: "og:title", content: "CourtDir — Ontario Courthouse Directory" },
+      { property: "og:title", content: "CourtLinks — Ontario Courthouse Directory" },
       {
         property: "og:description",
         content:
@@ -92,6 +92,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "CourtLinks — Ontario Courthouse Directory" },
+      { name: "description", content: "Court Clone Creator replicates a website, enabling users to build similar court link directories." },
+      { property: "og:description", content: "Court Clone Creator replicates a website, enabling users to build similar court link directories." },
+      { name: "twitter:description", content: "Court Clone Creator replicates a website, enabling users to build similar court link directories." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d9f2b8d-2535-410f-8a1f-4b7f96cad15a/id-preview-c5bb13ef--bfa7e719-ddab-4965-8528-7ea50c5ced86.lovable.app-1781227671513.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d9f2b8d-2535-410f-8a1f-4b7f96cad15a/id-preview-c5bb13ef--bfa7e719-ddab-4965-8528-7ea50c5ced86.lovable.app-1781227671513.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
