@@ -33,7 +33,7 @@ export function SiteHeader() {
             </div>
             <input
               type="text"
-              placeholder="Search from the registry below..."
+              placeholder="Search from the registry below... TESTING"
               readOnly
               onFocus={(e) => {
                 e.currentTarget.blur();
