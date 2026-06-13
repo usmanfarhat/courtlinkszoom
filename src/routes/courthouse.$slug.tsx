@@ -63,7 +63,6 @@ function CourthousePage() {
   const courthouse = all.find((c) => c.slug === slug)!;
 
   const [query, setQuery] = useState("");
-  const [openRooms, setOpenRooms] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -76,13 +75,7 @@ function CourthousePage() {
     );
   }, [courthouse.courtrooms, query]);
 
-  const toggle = (name: string) =>
-    setOpenRooms((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
+
 
   return (
     <>
