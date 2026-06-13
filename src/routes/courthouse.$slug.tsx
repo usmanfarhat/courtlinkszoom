@@ -1,10 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ChevronLeft, Search, ChevronDown, Mail, Phone } from "lucide-react";
+import { ChevronLeft, Search, Mail, Phone } from "lucide-react";
 import { getCourthouses } from "@/lib/courthouses.functions";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { SmartCell } from "@/components/smart-cell";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 const courthousesQuery = queryOptions({
   queryKey: ["courthouses"],
@@ -57,7 +63,6 @@ function CourthousePage() {
   const courthouse = all.find((c) => c.slug === slug)!;
 
   const [query, setQuery] = useState("");
-  const [openRooms, setOpenRooms] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -70,13 +75,7 @@ function CourthousePage() {
     );
   }, [courthouse.courtrooms, query]);
 
-  const toggle = (name: string) =>
-    setOpenRooms((prev) => {
-      const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
-      return next;
-    });
+
 
   return (
     <>
@@ -160,57 +159,41 @@ function CourthousePage() {
               <p className="font-serif text-xl">No courtrooms match that filter.</p>
             </div>
           ) : (
-            <ul className="divide-y divide-zinc-200/60 ring-1 ring-black/5 rounded-lg bg-white overflow-hidden">
+            <Accordion
+              type="multiple"
+              className="divide-y divide-zinc-200/60 ring-1 ring-black/5 rounded-lg bg-white overflow-hidden"
+            >
               {filtered.map((room, idx) => {
                 const key = `${room.name}-${idx}`;
-                const isOpen = openRooms.has(key);
                 return (
-                  <li key={key}>
-                    <button
-                      type="button"
-                      onClick={() => toggle(key)}
-                      className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-zinc-50/60 transition-colors"
-                    >
-                      <div className="flex items-center gap-4 min-w-0">
-                        <span className="font-mono text-xs text-brand-muted w-10 shrink-0">
-                          {String(idx + 1).padStart(2, "0")}
-                        </span>
-                        <span className="font-medium text-brand-fg">
-                          {room.name || "—"}
-                        </span>
+                  <AccordionItem key={key} value={key} className="border-b-0">
+                    <AccordionTrigger className="px-6 py-4 hover:bg-zinc-50/60 hover:no-underline">
+                      <span className="font-medium text-brand-fg">{room.name || "—"}</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-6 pt-3 bg-zinc-50/40 grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-zinc-200/40">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
+                          Zoom
+                        </p>
+                        <SmartCell raw={room.zoom} />
                       </div>
-                      <ChevronDown
-                        className={`size-4 text-brand-muted transition-transform ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {isOpen && (
-                      <div className="px-6 pb-6 pt-1 bg-zinc-50/40 grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-zinc-200/40">
-                        <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                            Zoom
-                          </p>
-                          <SmartCell raw={room.zoom} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                            Sign Up Sheet
-                          </p>
-                          <SmartCell raw={room.signUpSheet} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                            Comments
-                          </p>
-                          <SmartCell raw={room.comments} />
-                        </div>
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
+                          Sign Up Sheet
+                        </p>
+                        <SmartCell raw={room.signUpSheet} />
                       </div>
-                    )}
-                  </li>
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
+                          Comments
+                        </p>
+                        <SmartCell raw={room.comments} />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 );
               })}
-            </ul>
+            </Accordion>
           )}
         </section>
       </main>

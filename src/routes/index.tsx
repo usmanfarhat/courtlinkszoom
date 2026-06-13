@@ -64,45 +64,33 @@ function HomePage() {
         </section>
 
         <section className="max-w-7xl mx-auto px-6 mb-12">
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (filtered.length === 1) {
-                    router.navigate({
-                      to: "/courthouse/$slug",
-                      params: { slug: filtered[0].slug },
-                    });
-                  }
-                }}
-                className="flex items-center gap-2 p-1 bg-zinc-100 rounded-lg ring-1 ring-black/5"
-              >
-                <div className="pl-3 text-brand-muted">
-                  <Search className="size-4" />
-                </div>
-                <input
-                  id="global-search"
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Filter by city or courthouse..."
-                  className="flex-1 h-12 px-2 bg-transparent border-none outline-none text-base text-brand-fg placeholder:text-zinc-400"
-                />
-                <button
-                  type="submit"
-                  className="bg-brand-accent text-white px-6 h-10 rounded-md text-sm font-medium hover:bg-brand-fg transition-colors"
-                >
-                  Search Registry
-                </button>
-              </form>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (filtered.length === 1) {
+                router.navigate({
+                  to: "/courthouse/$slug",
+                  params: { slug: filtered[0].slug },
+                });
+              }
+            }}
+            className="flex items-center gap-2 p-1 bg-zinc-100 rounded-lg ring-1 ring-black/5"
+          >
+            <div className="pl-3 text-brand-muted">
+              <Search className="size-4" />
             </div>
-            <div className="w-full lg:w-80 h-14 bg-zinc-50 outline outline-1 -outline-offset-1 outline-black/5 rounded-lg flex items-center justify-center">
-              <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-400">
-                Public Notice Placement
-              </span>
-            </div>
-          </div>
+            <input
+              id="global-search"
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Filter by city or courthouse..."
+              className="flex-1 h-12 px-2 bg-transparent border-none outline-none text-base text-brand-fg placeholder:text-zinc-400"
+            />
+            <span className="pr-4 text-xs text-brand-muted whitespace-nowrap">
+              {courthouses.length} locations
+            </span>
+          </form>
         </section>
 
         <section className="max-w-7xl mx-auto px-6">

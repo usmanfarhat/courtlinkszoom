@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Search } from "lucide-react";
 
 export function SiteHeader() {
   return (
@@ -16,35 +15,7 @@ export function SiteHeader() {
             >
               Courthouses
             </Link>
-            <a
-              href="https://docs.google.com/spreadsheets/d/1I65fX5N6h7kX9t0iNyQll99kDEsmi6sySm7HmZ53Bn4/edit"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="text-sm font-medium text-brand-muted hover:text-brand-fg transition-colors"
-            >
-              Source data
-            </a>
           </nav>
-        </div>
-        <div className="hidden sm:flex items-center gap-4 w-full max-w-xs">
-          <div className="relative w-full">
-            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-muted">
-              <Search className="size-4" strokeWidth={2} />
-            </div>
-            <input
-              type="text"
-              placeholder="Search from the registry below... TESTING"
-              readOnly
-              onFocus={(e) => {
-                e.currentTarget.blur();
-                document
-                  .getElementById("global-search")
-                  ?.scrollIntoView({ behavior: "smooth", block: "center" });
-                setTimeout(() => document.getElementById("global-search")?.focus(), 350);
-              }}
-              className="w-full h-8 pl-8 pr-3 text-sm bg-zinc-100/60 border-none ring-1 ring-black/5 rounded-md focus:ring-brand-accent/20 outline-none placeholder:text-zinc-400 cursor-pointer"
-            />
-          </div>
         </div>
       </div>
     </header>
@@ -89,23 +60,6 @@ export function SiteFooter() {
                     className="text-sm text-brand-fg hover:underline decoration-zinc-300"
                   >
                     Ontario Courts
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-4">
-                System
-              </h4>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="https://docs.google.com/spreadsheets/d/1I65fX5N6h7kX9t0iNyQll99kDEsmi6sySm7HmZ53Bn4/edit"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="text-sm text-brand-fg hover:underline decoration-zinc-300"
-                  >
-                    Source sheet
                   </a>
                 </li>
               </ul>

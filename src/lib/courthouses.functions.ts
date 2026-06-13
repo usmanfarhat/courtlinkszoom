@@ -56,9 +56,13 @@ async function fetchAndParse(): Promise<Courthouse[]> {
     });
   }
 
-  return Array.from(grouped.values()).sort((a, b) =>
-    a.name.localeCompare(b.name, undefined, { sensitivity: "base" }),
-  );
+  const cmp = (a: string, b: string) =>
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+  const houses = Array.from(grouped.values());
+  for (const h of houses) {
+    h.courtrooms.sort((a, b) => cmp(a.name, b.name));
+  }
+  return houses.sort((a, b) => cmp(a.name, b.name));
 }
 
 export const getCourthouses = createServerFn({ method: "GET" })
