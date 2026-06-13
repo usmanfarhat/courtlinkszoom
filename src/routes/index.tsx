@@ -99,7 +99,7 @@ function HomePage() {
               Regional Jurisdictions
             </h2>
             <span className="text-sm text-brand-muted">
-              {filtered.length} of {courthouses.length} locations
+              {courthouses.length} locations
             </span>
           </div>
 
