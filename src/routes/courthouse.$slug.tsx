@@ -1,10 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ChevronLeft, Search, ChevronDown, Mail, Phone } from "lucide-react";
+import { ChevronLeft, Search, Mail, Phone } from "lucide-react";
 import { getCourthouses } from "@/lib/courthouses.functions";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { SmartCell } from "@/components/smart-cell";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 const courthousesQuery = queryOptions({
   queryKey: ["courthouses"],
