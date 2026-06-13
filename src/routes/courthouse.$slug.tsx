@@ -141,9 +141,6 @@ function CourthousePage() {
               placeholder="Filter courtrooms..."
               className="flex-1 h-11 px-2 bg-transparent border-none outline-none text-sm text-brand-fg placeholder:text-zinc-400"
             />
-            <span className="pr-4 text-xs text-brand-muted">
-              {filtered.length} / {courthouse.courtrooms.length}
-            </span>
           </div>
         </section>
 

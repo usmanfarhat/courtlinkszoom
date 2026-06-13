@@ -87,9 +87,6 @@ function HomePage() {
               placeholder="Filter by city or courthouse..."
               className="flex-1 h-12 px-2 bg-transparent border-none outline-none text-base text-brand-fg placeholder:text-zinc-400"
             />
-            <span className="pr-4 text-xs text-brand-muted whitespace-nowrap">
-              {courthouses.length} locations
-            </span>
           </form>
         </section>
 
@@ -99,7 +96,7 @@ function HomePage() {
               Regional Jurisdictions
             </h2>
             <span className="text-sm text-brand-muted">
-              {filtered.length} of {courthouses.length} locations
+              {courthouses.length} locations
             </span>
           </div>
 
