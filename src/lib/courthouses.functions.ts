@@ -9,42 +9,86 @@ export type Courtroom = {
   comments: string;
 };
 
+export type DetailField = {
+  label: string;
+  value: string;
+  kind: "email" | "phone" | "address" | "text";
+};
+
 export type Courthouse = {
   name: string;
   slug: string;
   courtrooms: Courtroom[];
+  details: DetailField[];
 };
 
-const SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/1I65fX5N6h7kX9t0iNyQll99kDEsmi6sySm7HmZ53Bn4/export?format=csv&gid=629952750";
+const SHEET_ID = "1I65fX5N6h7kX9t0iNyQll99kDEsmi6sySm7HmZ53Bn4";
+const COURTROOMS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=629952750`;
+const DETAILS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Courthouse_Details`;
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 let cache: { data: Courthouse[]; expires: number } | null = null;
 
-async function fetchAndParse(): Promise<Courthouse[]> {
-  const res = await fetch(SHEET_CSV_URL, {
-    headers: { "cache-control": "no-cache" },
-  });
-  if (!res.ok) throw new Error(`Failed to fetch sheet: ${res.status}`);
-  const text = await res.text();
+function classifyField(label: string): DetailField["kind"] {
+  const l = label.toLowerCase();
+  if (l.includes("email")) return "email";
+  if (l.includes("phone")) return "phone";
+  if (l.includes("address")) return "address";
+  return "text";
+}
 
-  const parsed = Papa.parse<Record<string, string>>(text, {
+async function fetchAndParse(): Promise<Courthouse[]> {
+  const [roomsRes, detailsRes] = await Promise.all([
+    fetch(COURTROOMS_CSV_URL, { headers: { "cache-control": "no-cache" } }),
+    fetch(DETAILS_CSV_URL, { headers: { "cache-control": "no-cache" } }),
+  ]);
+  if (!roomsRes.ok) throw new Error(`Failed to fetch courtrooms: ${roomsRes.status}`);
+
+  const roomsText = await roomsRes.text();
+  const detailsText = detailsRes.ok ? await detailsRes.text() : "";
+
+  const roomsParsed = Papa.parse<Record<string, string>>(roomsText, {
     header: true,
     skipEmptyLines: true,
   });
 
+  const detailsParsed = detailsText
+    ? Papa.parse<Record<string, string>>(detailsText, {
+        header: true,
+        skipEmptyLines: true,
+      })
+    : { data: [], meta: { fields: [] as string[] } };
+
+  const detailFields = (detailsParsed.meta.fields ?? []).filter(
+    (f) => f && f.trim() && f !== "Courthouse",
+  );
+  const detailsBySlug = new Map<string, DetailField[]>();
+  for (const row of detailsParsed.data) {
+    const name = (row["Courthouse"] ?? "").trim();
+    if (!name) continue;
+    const fields: DetailField[] = [];
+    for (const f of detailFields) {
+      const v = (row[f] ?? "").trim();
+      if (!v) continue;
+      fields.push({ label: f, value: v, kind: classifyField(f) });
+    }
+    detailsBySlug.set(toSlug(name), fields);
+  }
+
   const grouped = new Map<string, Courthouse>();
 
-  for (const row of parsed.data) {
+  for (const row of roomsParsed.data) {
     const courthouseName = (row["Courthouse"] ?? "").trim();
     if (!courthouseName) continue;
     const key = courthouseName.toUpperCase();
     let entry = grouped.get(key);
     if (!entry) {
+      const slug = toSlug(courthouseName);
       entry = {
         name: courthouseName,
-        slug: toSlug(courthouseName),
+        slug,
         courtrooms: [],
+        details: detailsBySlug.get(slug) ?? [],
       };
       grouped.set(key, entry);
     }

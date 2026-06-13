@@ -1,7 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ChevronLeft, Search, Mail, Phone } from "lucide-react";
+import { ChevronLeft, Search } from "lucide-react";
+import { DetailFieldRow } from "@/components/detail-field";
 import { getCourthouses } from "@/lib/courthouses.functions";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { SmartCell } from "@/components/smart-cell";
@@ -90,42 +91,25 @@ function CourthousePage() {
           </Link>
 
           <div className="rounded-lg ring-1 ring-black/5 bg-white overflow-hidden">
-            <div className="p-8 border-b border-zinc-200/60">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">
+            <div className="px-6 py-5 border-b border-zinc-200/60">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-brand-muted mb-1">
                 Courthouse
               </p>
-              <h1 className="text-4xl md:text-5xl font-serif leading-tight text-balance capitalize">
+              <h1 className="text-3xl md:text-4xl font-serif leading-tight text-balance capitalize">
                 {courthouse.name.toLowerCase()}
               </h1>
-              <p className="mt-3 text-brand-muted text-sm">
+              <p className="mt-1.5 text-brand-muted text-xs">
                 {courthouse.courtrooms.length} courtroom
                 {courthouse.courtrooms.length === 1 ? "" : "s"} on file.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/60">
-              <div className="p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                  Trial Coordinator
-                </p>
-                <p className="text-sm text-brand-fg flex items-center gap-2">
-                  <Mail className="size-3.5 text-brand-muted" /> tbd@ontario.ca
-                </p>
+            {courthouse.details.length > 0 && (
+              <div className="px-6 py-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6">
+                {courthouse.details.map((f) => (
+                  <DetailFieldRow key={f.label} field={f} />
+                ))}
               </div>
-              <div className="p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                  Registry
-                </p>
-                <p className="text-sm text-brand-fg flex items-center gap-2">
-                  <Phone className="size-3.5 text-brand-muted" /> (000) 000-0000
-                </p>
-              </div>
-              <div className="p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                  Hours
-                </p>
-                <p className="text-sm text-brand-fg">Mon–Fri · 9:00am–5:00pm</p>
-              </div>
-            </div>
+            )}
           </div>
         </section>
 
