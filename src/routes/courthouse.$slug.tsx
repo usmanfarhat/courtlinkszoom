@@ -5,7 +5,7 @@ import { ChevronLeft, Search } from "lucide-react";
 import { DetailFieldRow } from "@/components/detail-field";
 import { getCourthouses } from "@/lib/courthouses.functions";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { SmartCell } from "@/components/smart-cell";
+import { SmartCell, hasContent } from "@/components/smart-cell";
 import {
   Accordion,
   AccordionItem,
