@@ -13,7 +13,7 @@ const courthousesQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CourtDir — Ontario Courthouse Directory" },
+      { title: "CourtLinks — Ontario Courthouse Directory" },
       {
         name: "description",
         content:

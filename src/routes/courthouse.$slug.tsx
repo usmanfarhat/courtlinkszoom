@@ -21,7 +21,7 @@ const courthousesQuery = queryOptions({
 export const Route = createFileRoute("/courthouse/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `${params.slug.replace(/-/g, " ")} — CourtDir` },
+      { title: `${params.slug.replace(/-/g, " ")} — CourtLinks` },
       {
         name: "description",
         content: `Courtroom Zoom links, dial-in numbers, and sign-up sheets for the ${params.slug.replace(/-/g, " ")} courthouse.`,
