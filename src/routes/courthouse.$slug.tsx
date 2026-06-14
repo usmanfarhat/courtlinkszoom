@@ -166,7 +166,16 @@ function CourthousePage() {
                               <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
                                 {f.label}
                               </p>
-                              <SmartCell raw={f.value} />
+                              <SmartCell
+                                raw={f.value}
+                                linkLabel={
+                                  f.label === "Zoom"
+                                    ? "Join Meeting"
+                                    : f.label === "Sign Up Sheet"
+                                      ? "Open Sign Up Sheet"
+                                      : undefined
+                                }
+                              />
                             </div>
                           ))}
                         </div>
