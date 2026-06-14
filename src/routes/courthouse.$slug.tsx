@@ -146,30 +146,31 @@ function CourthousePage() {
             >
               {filtered.map((room, idx) => {
                 const key = `${room.name}-${idx}`;
+                const fields = [
+                  { label: "Zoom", value: room.zoom },
+                  { label: "Sign Up Sheet", value: room.signUpSheet },
+                  { label: "Comments", value: room.comments },
+                ].filter((f) => hasContent(f.value));
                 return (
                   <AccordionItem key={key} value={key} className="border-b-0">
                     <AccordionTrigger className="px-6 py-4 hover:bg-zinc-50/60 hover:no-underline">
                       <span className="font-medium text-brand-fg">{room.name || "—"}</span>
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-6 pt-3 bg-zinc-50/40 grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-zinc-200/40">
-                      <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                          Zoom
-                        </p>
-                        <SmartCell raw={room.zoom} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                          Sign Up Sheet
-                        </p>
-                        <SmartCell raw={room.signUpSheet} />
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
-                          Comments
-                        </p>
-                        <SmartCell raw={room.comments} />
-                      </div>
+                    <AccordionContent className="px-6 pb-6 pt-3 bg-zinc-50/40 border-t border-zinc-200/40">
+                      {fields.length === 0 ? (
+                        <p className="text-sm text-brand-muted italic">No details on file.</p>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {fields.map((f) => (
+                            <div key={f.label}>
+                              <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-muted mb-2">
+                                {f.label}
+                              </p>
+                              <SmartCell raw={f.value} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </AccordionContent>
                   </AccordionItem>
                 );
