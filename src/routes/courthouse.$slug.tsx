@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ChevronLeft, Search } from "lucide-react";
+import { ChevronLeft, Flag, Search } from "lucide-react";
 import { DetailFieldRow } from "@/components/detail-field";
 import { getCourthouses } from "@/lib/courthouses.functions";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
@@ -21,7 +21,7 @@ const courthousesQuery = queryOptions({
 export const Route = createFileRoute("/courthouse/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `${params.slug.replace(/-/g, " ")} — CourtDir` },
+      { title: `${params.slug.replace(/-/g, " ")} — CourtLinks` },
       {
         name: "description",
         content: `Courtroom Zoom links, dial-in numbers, and sign-up sheets for the ${params.slug.replace(/-/g, " ")} courthouse.`,
@@ -91,17 +91,28 @@ function CourthousePage() {
           </Link>
 
           <div className="rounded-lg ring-1 ring-black/5 bg-white overflow-hidden">
-            <div className="px-6 py-5 border-b border-zinc-200/60">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-brand-muted mb-1">
-                Courthouse
-              </p>
-              <h1 className="text-3xl md:text-4xl font-serif leading-tight text-balance capitalize">
-                {courthouse.name.toLowerCase()}
-              </h1>
-              <p className="mt-1.5 text-brand-muted text-xs">
-                {courthouse.courtrooms.length} courtroom
-                {courthouse.courtrooms.length === 1 ? "" : "s"} on file.
-              </p>
+            <div className="px-6 py-5 border-b border-zinc-200/60 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-brand-muted mb-1">
+                  Courthouse
+                </p>
+                <h1 className="text-3xl md:text-4xl font-serif leading-tight text-balance capitalize">
+                  {courthouse.name.toLowerCase()}
+                </h1>
+                <p className="mt-1.5 text-brand-muted text-xs">
+                  {courthouse.courtrooms.length} courtroom
+                  {courthouse.courtrooms.length === 1 ? "" : "s"} on file.
+                </p>
+              </div>
+              <Link
+                to="/contact"
+                search={{ courthouse: courthouse.slug }}
+                className="shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-brand-muted hover:text-brand-fg transition-colors px-3 py-1.5 rounded-full ring-1 ring-zinc-200 hover:ring-zinc-300 whitespace-nowrap"
+                title="Report missing or incorrect data for this courthouse"
+              >
+                <Flag className="size-3.5" />
+                Report an issue
+              </Link>
             </div>
             {courthouse.details.length > 0 && (
               <div className="px-6 py-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6">
