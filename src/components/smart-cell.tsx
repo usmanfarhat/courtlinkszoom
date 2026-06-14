@@ -32,7 +32,7 @@ export function hasContent(raw: string | undefined | null): boolean {
   return !isEmptyCell(parseCell(raw));
 }
 
-export function SmartCell({ raw }: { raw: string | undefined | null }) {
+export function SmartCell({ raw, linkLabel }: { raw: string | undefined | null; linkLabel?: string }) {
   const segments: CellSegment[] = parseCell(raw);
   if (isEmptyCell(segments)) {
     return <span className="text-zinc-300">—</span>;
