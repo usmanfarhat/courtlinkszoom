@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Copy, Check, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
-import { parseCell, isEmptyCell } from "@/lib/cell-format";
+import { parseCell, isEmptyCell, type CellSegment } from "@/lib/cell-format";
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
       type="button"
-      onClick={async () => {
+      onClick={async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         try {
           await navigator.clipboard.writeText(value);
           setCopied(true);
@@ -18,7 +20,7 @@ function CopyButton({ value }: { value: string }) {
           toast.error("Couldn't copy");
         }
       }}
-      className="inline-flex items-center justify-center size-6 rounded text-brand-muted hover:bg-zinc-100 hover:text-brand-fg transition-colors shrink-0"
+      className="inline-flex items-center justify-center size-8 rounded-md text-brand-muted hover:bg-zinc-100 hover:text-brand-fg transition-colors shrink-0"
       aria-label={`Copy ${value}`}
     >
       {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
@@ -26,8 +28,12 @@ function CopyButton({ value }: { value: string }) {
   );
 }
 
+export function hasContent(raw: string | undefined | null): boolean {
+  return !isEmptyCell(parseCell(raw));
+}
+
 export function SmartCell({ raw }: { raw: string | undefined | null }) {
-  const segments = parseCell(raw);
+  const segments: CellSegment[] = parseCell(raw);
   if (isEmptyCell(segments)) {
     return <span className="text-zinc-300">—</span>;
   }
@@ -37,12 +43,12 @@ export function SmartCell({ raw }: { raw: string | undefined | null }) {
         if (seg.kind === "empty") return null;
         if (seg.kind === "link") {
           return (
-            <div key={i} className="flex items-center gap-2 min-w-0">
+            <div key={i} className="flex items-center gap-1.5 min-w-0">
               <a
                 href={seg.href}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-sm text-brand-fg underline decoration-zinc-300 hover:decoration-brand-fg underline-offset-4 truncate"
+                className="inline-flex items-center gap-1.5 min-w-0 px-3 h-8 rounded-md bg-brand-fg text-white text-sm font-medium hover:bg-brand-fg/85 transition-colors no-underline"
               >
                 <ExternalLink className="size-3.5 shrink-0" />
                 <span className="truncate">{seg.label}</span>
@@ -52,7 +58,7 @@ export function SmartCell({ raw }: { raw: string | undefined | null }) {
           );
         }
         return (
-          <div key={i} className="flex items-center gap-2 min-w-0">
+          <div key={i} className="flex items-center gap-1.5 min-w-0">
             <span className="font-mono text-sm text-brand-fg truncate">{seg.value}</span>
             <CopyButton value={seg.value} />
           </div>

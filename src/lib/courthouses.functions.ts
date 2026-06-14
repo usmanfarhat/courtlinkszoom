@@ -77,6 +77,21 @@ async function fetchAndParse(): Promise<Courthouse[]> {
 
   const grouped = new Map<string, Courthouse>();
 
+  // Seed from Courthouse_Details so locations without zoom rows still appear.
+  for (const row of detailsParsed.data) {
+    const courthouseName = (row["Courthouse"] ?? "").trim();
+    if (!courthouseName) continue;
+    const key = courthouseName.toUpperCase();
+    if (grouped.has(key)) continue;
+    const slug = toSlug(courthouseName);
+    grouped.set(key, {
+      name: courthouseName,
+      slug,
+      courtrooms: [],
+      details: detailsBySlug.get(slug) ?? [],
+    });
+  }
+
   for (const row of roomsParsed.data) {
     const courthouseName = (row["Courthouse"] ?? "").trim();
     if (!courthouseName) continue;

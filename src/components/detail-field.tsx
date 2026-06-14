@@ -56,7 +56,7 @@ export function DetailFieldRow({ field }: { field: DetailField }) {
               href={href}
               target={kind === "address" ? "_blank" : undefined}
               rel={kind === "address" ? "noreferrer noopener" : undefined}
-              className="text-sm text-brand-fg underline decoration-zinc-300 hover:decoration-brand-fg underline-offset-4 truncate"
+              className="text-sm text-brand-fg hover:text-brand-fg/70 transition-colors truncate no-underline"
             >
               {value}
             </a>
