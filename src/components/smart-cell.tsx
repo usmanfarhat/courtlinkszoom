@@ -32,7 +32,7 @@ export function hasContent(raw: string | undefined | null): boolean {
   return !isEmptyCell(parseCell(raw));
 }
 
-export function SmartCell({ raw }: { raw: string | undefined | null }) {
+export function SmartCell({ raw, linkLabel }: { raw: string | undefined | null; linkLabel?: string }) {
   const segments: CellSegment[] = parseCell(raw);
   if (isEmptyCell(segments)) {
     return <span className="text-zinc-300">—</span>;
@@ -51,7 +51,7 @@ export function SmartCell({ raw }: { raw: string | undefined | null }) {
                 className="inline-flex items-center gap-1.5 min-w-0 px-3 h-8 rounded-md bg-brand-fg text-white text-sm font-medium hover:bg-brand-fg/85 transition-colors no-underline"
               >
                 <ExternalLink className="size-3.5 shrink-0" />
-                <span className="truncate">{seg.label}</span>
+                <span className="truncate">{linkLabel ?? seg.label}</span>
               </a>
               <CopyButton value={seg.href} />
             </div>
