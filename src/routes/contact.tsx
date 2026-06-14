@@ -31,7 +31,7 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const { courthouse, subject } = Route.useSearch();
   const prettyCourthouse = courthouse
-    ? courthouse.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+    ? courthouse.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())
     : "";
   const defaultSubject =
     subject ?? (prettyCourthouse ? `Data correction: ${prettyCourthouse}` : "");
